@@ -26,7 +26,7 @@ const SearchBar = () => {
     const [searchValue, setSearchValue] = useState('');
     const [foodItems, setFoodItems] = useState<foodItems[]>([]);
     const getFoodNames = (search: string) => {
-        axios.get('http://157.230.82.73/foodData/search')
+        axios.get('http://157.230.82.73/foodData/search',{headers: {'Access-Control-Allow-Origin': '*' }})
             .then((response) => {
                 const newDict = [];
                 for (let i = 0; i < response.data.items.length; i++) {
@@ -45,7 +45,7 @@ const SearchBar = () => {
             });
         }
         else{
-            axios.get('http://157.230.82.73/foodData/search?name=' + searchValue)
+            axios.get('http://157.230.82.73/foodData/search?name=' + searchValue,{headers: {'Access-Control-Allow-Origin': '*' }})
             .then((response) => {
                 if (response.data.items.length > 0){
                     setFoodItems(response.data.items);
