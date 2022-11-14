@@ -14,7 +14,7 @@ const NutritientList = () => {
     const [nutrientNames, setNutrientNames] = React.useState<StateProperties[]>([]);
     const [checked, setChecked] = React.useState([0]);
     const getNutrientsList = () => {
-        axios.get('http://157.230.82.73/foodData/nutrients',{headers: {'Access-Control-Allow-Origin': '*' }})
+        axios.get('http://157.230.82.73/foodData/nutrients',{headers: {'Access-Control-Allow-Origin': '*', }})
             .then((response) => {
                 const newDict = [];
 
