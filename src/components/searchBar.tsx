@@ -1,12 +1,10 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { styled } from "@mui/material/styles";
 import {Container, TextField, Autocomplete, Button } from "@mui/material";
 import Grid from '@mui/material/Grid';
 import NutritientList from './advancedSearchElements';
 import DisplayFood from "./displayFood";
 import axios from "axios";
-import { display } from "@mui/system";
 import swal from 'sweetalert';
 
 

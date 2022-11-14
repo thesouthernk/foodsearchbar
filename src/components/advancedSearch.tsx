@@ -9,7 +9,7 @@ import IconButton from '@mui/material/IconButton';
 import Grid from '@mui/material/Grid';
 
 interface Props {
-    labels: any;
+    labels: Array<object>;
 }
 
 export default function CheckboxList( {labels}: Props) {
