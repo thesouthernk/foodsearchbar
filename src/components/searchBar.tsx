@@ -6,7 +6,8 @@ import NutritientList from './advancedSearchElements';
 import DisplayFood from "./displayFood";
 import axios from "axios";
 import swal from 'sweetalert';
-
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 
 
@@ -24,6 +25,7 @@ const SearchBar = () => {
     const [foodDescriptions, setFoodDescriptions] = useState<StateProperties[]>([]);
     const [adanvacedSearch, setAdvancedSearch] = useState(true);
     const [searchValue, setSearchValue] = useState('');
+    const [advancedSearchElements, setAdvancedSearchElements] = useState<foodItems[]>([]);
     const [foodItems, setFoodItems] = useState<foodItems[]>([]);
     const getFoodNames = (search: string) => {
         axios.get('https://api.javiermansilla.com/foodData/search',{headers: {'Access-Control-Allow-Origin': '*', }})
@@ -78,56 +80,70 @@ const SearchBar = () => {
         });
             
     }
-    
-    return(
-        <Grid
-            container
-            spacing={0}
-            direction="column"
-            alignItems="center"
-            justifyContent="center"
-            style={{ minHeight: '10vh', minWidth: '10vw' }}
-            hidden={adanvacedSearch}
-            >
-            <Grid 
-                item xs={12}
-            >
-                <Container maxWidth="sm">
-                    <h1>Search Bar</h1>
-                    <Autocomplete
-                        disablePortal
-                        id="combo-box-demo"
-                        options={foodDescriptions}
-                        sx={{ width: 300 }}
-                        renderInput={(params) => <TextField {...params} label="cheese" />}
-                        onSelect={(event) => setSearchValue((event.target as HTMLInputElement).value)}
-                        />
-                </Container>
-            </Grid>
-            <Grid 
-                item xs={12}
-                alignItems="right"
-                paddingTop={2}
-            >
-                <Button onClick={() => setAdvancedSearch(!adanvacedSearch) }>Advanced Search</Button>
-                {adanvacedSearch &&  <Button variant="contained" onClick={() => doSearch(searchValue)}>Search</Button>}
-                {!adanvacedSearch &&  <Button variant="contained" onClick={() => doAvancedSearch('')}>Advanced Search</Button>}
-               
-                
-            </Grid>
+    function advancedClick(){
+        setAdvancedSearch(!adanvacedSearch);
+        console.log(searchValue);
+        setSearchValue('');
+        
+    }
+    if (foodDescriptions.length == 0) {
+        return( 
+        <Box sx={{ margin: 2 }}>
+            <CircularProgress />
+        </Box>)
+    }    
+    else {
+        return(
             <Grid
-                hidden = {adanvacedSearch}
-            >
-                <NutritientList />
+                container
+                spacing={0}
+                direction="column"
+                alignItems="center"
+                justifyContent="center"
+                style={{ minHeight: '10vh', minWidth: '10vw' }}
+                hidden={adanvacedSearch}
+                >
+                <Grid 
+                    item xs={12}
+                >
+                    <Container maxWidth="sm">
+                        <h1>Search Bar</h1>
+                        {adanvacedSearch &&  
+                         <Autocomplete
+                         disablePortal
+                         id="combo-box-demo"
+                         options={foodDescriptions}
+                         sx={{ width: 300 }}
+                         renderInput={searchValue => <TextField {...searchValue} label="Search Food" />}
+                         onSelect={(event) => setSearchValue((event.target as HTMLInputElement).value)}
+                         />
+                        }
+                    </Container>
+                </Grid>
+                <Grid 
+                    item xs={12}
+                    alignItems="right"
+                    paddingTop={2}
+                >
+                    <Button onClick={() => advancedClick() }>Advanced Search</Button>
+                    {adanvacedSearch &&  <Button variant="contained" onClick={() => doSearch(searchValue)}>Search</Button>}
+                    {!adanvacedSearch &&  <Button variant="contained" onClick={() => doAvancedSearch('')}>Advanced Search</Button>}
+                
+                    
+                </Grid>
+                <Grid
+                    hidden = {adanvacedSearch}
+                >
+                </Grid>
+                <Grid>
+                    <DisplayFood items={foodItems} />
+                </Grid>
             </Grid>
-            <Grid>
-                <DisplayFood items={foodItems} />
-            </Grid>
-        </Grid>
-        
-        
-        
-    )
+            
+            
+            
+        )
+        }
     };
 
 export default SearchBar;
